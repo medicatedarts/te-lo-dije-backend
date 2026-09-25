@@ -1,0 +1,51 @@
+# Copia este archivo a ".env" y llena los valores. Nunca subas el ".env" real a git.
+
+# --- Servidor ---
+PORT=4000
+# URL pública donde vivirá este backend (para armar success_url/cancel_url de Stripe)
+BACKEND_PUBLIC_URL=http://localhost:4000
+# URL donde vive el sitio/formulario (para redirigir de vuelta después del pago)
+FRONTEND_URL=http://localhost:5500
+
+# --- Stripe (procesador de pago) ---
+# Dashboard de Stripe > Developers > API keys
+STRIPE_SECRET_KEY=
+# Dashboard de Stripe > Developers > Webhooks > tu endpoint > Signing secret
+# (o el que te da `stripe listen` en desarrollo local)
+STRIPE_WEBHOOK_SECRET=
+# Precio de la carta en centavos, ej. 1499 = $14.99
+LETTER_PRICE_CENTS=1499
+STRIPE_CURRENCY=usd
+
+# --- Administración ---
+# Token secreto que tú inventas (cualquier cadena larga y aleatoria) para poder
+# borrar un pedido cuando alguien pida eliminación de sus datos. Ver README.
+ADMIN_TOKEN=
+
+# --- Lob (impresión y envío postal automático) ---
+# Dashboard de Lob > Settings > API Keys (usa la "live" solo cuando ya estés listo para enviar cartas reales;
+# usa la "test" mientras desarrollas — con la test key Lob simula el envío sin cobrarte ni imprimir nada real)
+LOB_API_KEY=
+
+# Dirección del remitente. Opción A: crea la dirección una vez en el dashboard de Lob y pon su ID aquí.
+LOB_FROM_ADDRESS_ID=
+# Opción B (si no usas un address ID): llena estos campos como remitente por defecto
+LOB_FROM_NAME=Te Lo Dije
+LOB_FROM_ADDRESS_LINE1=
+LOB_FROM_ADDRESS_LINE2=
+LOB_FROM_ADDRESS_CITY=
+LOB_FROM_ADDRESS_STATE=
+LOB_FROM_ADDRESS_ZIP=
+LOB_FROM_ADDRESS_COUNTRY=US
+
+# Nombre exacto del archivo del sello tal como está en el repositorio de GitHub
+# (revisa el nombre real en tu repo — si lo subiste desde el celular puede tener
+# el formato "assets:sello-te-lo-dije.png" en vez de estar en una carpeta).
+STAMP_FILENAME=assets:sello-te-lo-dije.png
+
+# URL pública de la imagen del sello. El backend la sirve en /sello.png sin importar
+# el nombre real del archivo (ver STAMP_FILENAME arriba), así que normalmente esto es:
+#   ${BACKEND_PUBLIC_URL}/sello.png
+# (Lob necesita poder alcanzar esa URL desde internet — en localhost puro no funcionará;
+# usa un túnel como ngrok mientras pruebas, o la URL real una vez despliegues el backend)
+STAMP_IMAGE_URL=http://localhost:4000/sello.png

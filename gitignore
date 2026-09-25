@@ -1,0 +1,11 @@
+# Dependencias instaladas — Render las instala solo con `npm install`
+node_modules/
+
+# Tus llaves reales — nunca subas esto a GitHub, solo .env.example
+.env
+
+# Pedidos guardados localmente durante pruebas
+orders.json
+
+# Archivos del sistema
+.DS_Store
