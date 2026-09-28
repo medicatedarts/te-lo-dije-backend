@@ -120,6 +120,7 @@ function buildLetterHtml(order, stampImageUrl) {
     font-size: 17pt;
     color: #3A1140;
     margin: 0;
+    overflow-wrap: break-word;
   }
   .stamp {
     width: 130px;
