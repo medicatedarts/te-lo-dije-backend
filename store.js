@@ -35,7 +35,7 @@ function createOrder(letterData) {
     expNumber,
     status: 'pending', // pending -> paid -> sent  (o "error")
     createdAt: new Date().toISOString(),
-    letter: letterData, // { tema, consequences, nombre, remitente, address }
+    letter: letterData, // { tema, consequences, nombre, remitente, tone, address }
     stripeSessionId: null,
     lobLetterId: null,
     error: null,

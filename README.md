@@ -64,7 +64,7 @@ Ese comando te da un `whsec_...` — pégalo en `STRIPE_WEBHOOK_SECRET` en tu `.
 | `STRIPE_WEBHOOK_SECRET` | `stripe listen` (desarrollo) o Developers → Webhooks → tu endpoint (producción) |
 | `LOB_API_KEY` | [dashboard.lob.com](https://dashboard.lob.com) → Settings → API Keys. Usa la **test key** mientras pruebas — simula el envío sin imprimir ni cobrar nada real |
 | `LOB_FROM_ADDRESS_ID` *(o los campos `LOB_FROM_*`)* | Tu dirección de remitente. Puedes crearla una vez en el dashboard de Lob y copiar su ID, o llenar los campos sueltos en `.env` |
-| `STAMP_IMAGE_URL` | Ya no necesitas subirla a ningún lado: el backend sirve `assets/sello-te-lo-dije.png` como archivo estático en `/assets`. Solo apunta esto a `${BACKEND_PUBLIC_URL}/assets/sello-te-lo-dije.png`. **Ojo:** Lob tiene que poder alcanzar esa URL desde internet — en `localhost` puro no va a funcionar; usa [ngrok](https://ngrok.com) mientras pruebas localmente, o la URL real una vez el backend esté desplegado. (Google Drive no es buena opción aquí: sus links no sirven la imagen directamente de forma confiable, muestran pantallas de confirmación o limitan las descargas.) |
+| `STAMP_IMAGE_URL` | El backend sirve el sello en `/sello.png` sin importar cómo se llame el archivo real en el repo — solo ajusta `STAMP_FILENAME` para que coincida con el nombre exacto que ves en GitHub. Entonces `STAMP_IMAGE_URL` normalmente es `${BACKEND_PUBLIC_URL}/sello.png`. **Ojo:** Lob tiene que poder alcanzar esa URL desde internet — en `localhost` puro no va a funcionar; usa [ngrok](https://ngrok.com) mientras pruebas localmente, o la URL real una vez el backend esté desplegado. |
 
 ## 4. Conectar el formulario (`index.html`)
 

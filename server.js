@@ -105,6 +105,7 @@ app.use(express.json());
 app.post('/api/checkout', async (req, res) => {
   try {
     const { tema, consequences, nombre, remitente, address, consent } = req.body || {};
+    let { tone } = req.body || {};
 
     // Validación mínima — que no llegue un pedido vacío o sin dirección.
     if (!tema || !nombre || !address || !address.line1 || !address.city || !address.zip) {
@@ -120,11 +121,17 @@ app.post('/api/checkout', async (req, res) => {
       return res.status(400).json({ error: 'Falta confirmar la edad, autorización y aceptación de los términos.' });
     }
 
+    // El tono de la carta (libre / elocuente / super) — si viene algo raro o
+    // no viene, usamos "elocuente" como estándar. Ver /backend/letterTemplate.js.
+    const VALID_TONES = ['libre', 'elocuente', 'super'];
+    if (!VALID_TONES.includes(tone)) tone = 'elocuente';
+
     const order = createOrder({
       tema,
       consequences,
       nombre,
       remitente,
+      tone,
       address,
       consent: {
         ageAndAuthorized: true,
