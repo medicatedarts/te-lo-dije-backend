@@ -14,6 +14,7 @@ const cors = require('cors');
 const Stripe = require('stripe');
 const { createOrder, getOrder, updateOrder, deleteOrder } = require('./store');
 const { buildLetterHtml } = require('./letterTemplate');
+const { checkContent } = require('./contentFilter');
 
 const PORT = process.env.PORT || 4000;
 const BACKEND_PUBLIC_URL = process.env.BACKEND_PUBLIC_URL || `http://localhost:${PORT}`;
@@ -117,8 +118,16 @@ app.post('/api/checkout', async (req, res) => {
     // El consentimiento se valida también aquí, en el servidor — no basta con que
     // el checkbox esté marcado en el navegador, porque cualquiera puede saltarse
     // el frontend y llamar a esta ruta directamente.
-    if (!consent || !consent.ageAndAuthorized || !consent.acceptedTerms) {
-      return res.status(400).json({ error: 'Falta confirmar la edad, autorización y aceptación de los términos.' });
+    if (!consent || !consent.ageAndAuthorized || !consent.acceptedTerms || !consent.contentPolicy) {
+      return res.status(400).json({ error: 'Falta confirmar la edad, autorización, aceptación de los términos, y la política de contenido.' });
+    }
+
+    // Filtro de contenido: bloquea amenazas, contenido sexual explícito, y
+    // contenido sexual sobre menores. Las groserías comunes SÍ se permiten.
+    // Ver contentFilter.js para el detalle y las limitaciones conocidas.
+    const contentCheck = checkContent({ tema, consequences, nombre, remitente });
+    if (contentCheck.blocked) {
+      return res.status(400).json({ error: contentCheck.reason, code: 'content_policy' });
     }
 
     // El tono de la carta (libre / elocuente / super) — si viene algo raro o
@@ -136,6 +145,7 @@ app.post('/api/checkout', async (req, res) => {
       consent: {
         ageAndAuthorized: true,
         acceptedTerms: true,
+        contentPolicy: true,
         consentedAt: new Date().toISOString(),
         consentIp: req.headers['x-forwarded-for'] || req.socket.remoteAddress || null,
       },
