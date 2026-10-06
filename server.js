@@ -1,5 +1,5 @@
 // server.js
-// Backend de "Te Lo Dije": recibe el pedido -> cobra con Stripe -> al confirmarse el pago,
+// Backend de "Yo Te Lo Dije": recibe el pedido -> cobra con Stripe -> al confirmarse el pago,
 // manda la carta a imprimir y enviar por correo con Lob. Sin intervención humana en el medio.
 //
 // Cómo correrlo (ver README.md para más detalle):
@@ -163,7 +163,7 @@ app.post('/api/checkout', async (req, res) => {
             currency,
             unit_amount: priceCents,
             product_data: {
-              name: 'Carta "Te Lo Dije" — impresa y enviada por correo',
+              name: 'Carta "Yo Te Lo Dije" — impresa y enviada por correo',
               description: `Para: ${nombre}`,
             },
           },
@@ -235,7 +235,7 @@ async function sendLetterViaLob(order) {
   const from = process.env.LOB_FROM_ADDRESS_ID
     ? process.env.LOB_FROM_ADDRESS_ID
     : {
-        name: process.env.LOB_FROM_NAME || 'Te Lo Dije',
+        name: process.env.LOB_FROM_NAME || 'Yo Te Lo Dije',
         address_line1: process.env.LOB_FROM_ADDRESS_LINE1,
         address_line2: process.env.LOB_FROM_ADDRESS_LINE2 || undefined,
         address_city: process.env.LOB_FROM_ADDRESS_CITY,
@@ -245,7 +245,7 @@ async function sendLetterViaLob(order) {
       };
 
   const body = {
-    description: `Te Lo Dije - ${order.letter.nombre} - ${order.expNumber}`,
+    description: `Yo Te Lo Dije - ${order.letter.nombre} - ${order.expNumber}`,
     to: {
       name: order.letter.nombre,
       address_line1: addr.line1,
@@ -284,5 +284,5 @@ async function sendLetterViaLob(order) {
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
 app.listen(PORT, () => {
-  console.log(`Te Lo Dije backend corriendo en ${BACKEND_PUBLIC_URL}`);
+  console.log(`Yo Te Lo Dije backend corriendo en ${BACKEND_PUBLIC_URL}`);
 });
