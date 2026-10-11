@@ -80,6 +80,7 @@ function buildLetterHtml(order, stampImageUrl) {
     font-size: 12.5pt;
     line-height: 1.5;
   }
+  .address-space { height: 2.75in; }
   .meta {
     display: flex;
     justify-content: space-between;
@@ -131,6 +132,8 @@ function buildLetterHtml(order, stampImageUrl) {
 </style>
 </head>
 <body>
+  <!-- Zona reservada para el bloque de dirección que Lob imprime arriba de la primera página -->
+  <div class="address-space"></div>
   <div class="meta">
     <span>Exp. Núm. ${escapeHtml(expNumber)}</span>
     <span>${formatDateEs(new Date(createdAt))}</span>

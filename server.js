@@ -151,7 +151,9 @@ app.post('/api/checkout', async (req, res) => {
       },
     });
 
-    const priceCents = parseInt(process.env.LETTER_PRICE_CENTS || '1499', 10);
+    // Precio final al cliente: $7.99, con el IVU ya incluido (no se suma aparte en el checkout).
+    // Se puede cambiar con LETTER_PRICE_CENTS en Render.
+    const priceCents = parseInt(process.env.LETTER_PRICE_CENTS || '799', 10);
     const currency = process.env.STRIPE_CURRENCY || 'usd';
 
     const session = await stripe.checkout.sessions.create({
@@ -259,7 +261,10 @@ async function sendLetterViaLob(order) {
     file: html,
     color: true,
     double_sided: false,
-    address_placement: 'insert_blank_page',
+    // La dirección va impresa en la parte superior de la primera página (se ve por la
+    // ventana del sobre). Así NO se agrega una hoja extra. letterTemplate.js deja
+    // libre esa zona.
+    address_placement: 'top_first_page',
     size: 'us_letter',
   };
 
