@@ -115,6 +115,21 @@ app.post('/api/checkout', async (req, res) => {
     if (!Array.isArray(consequences) || consequences.filter(Boolean).length === 0) {
       return res.status(400).json({ error: 'Añade al menos una consecuencia.' });
     }
+    // Límites de largo: con más texto la carta se pasa de una hoja al imprimirse
+    // (y cada hoja extra se cobra aparte). Deben coincidir con los del formulario.
+    const clean = consequences.filter(Boolean);
+    if (
+      String(tema).length > 70 ||
+      String(nombre).length > 50 ||
+      String(remitente || '').length > 32 ||
+      clean.length > 5 ||
+      clean.some((c) => String(c).length > 80)
+    ) {
+      return res.status(400).json({
+        error: 'El texto de la carta es demasiado largo. Máximo: 5 consecuencias de 80 caracteres, tema de 70, nombre de 50 y firma de 32.',
+      });
+    }
+
     // El consentimiento se valida también aquí, en el servidor — no basta con que
     // el checkbox esté marcado en el navegador, porque cualquiera puede saltarse
     // el frontend y llamar a esta ruta directamente.
