@@ -265,6 +265,10 @@ async function sendLetterViaLob(order) {
     // ventana del sobre). Así NO se agrega una hoja extra. letterTemplate.js deja
     // libre esa zona.
     address_placement: 'top_first_page',
+    // Lob exige declarar el tipo de correo: "marketing" (promocional) u "operational"
+    // (no promocional). Cada carta es un envío personal pedido por el cliente, no
+    // publicidad, así que usamos "operational". Se puede cambiar con LOB_USE_TYPE en Render.
+    use_type: process.env.LOB_USE_TYPE || 'operational',
     // Nota: las cartas de Lob siempre son tamaño carta (US Letter); el parámetro "size"
     // no existe para cartas (solo para postales) y Lob lo rechaza.
   };
