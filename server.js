@@ -288,6 +288,10 @@ async function sendLetterViaLob(order) {
     throw new Error(data?.error?.message || `Lob respondió ${response.status}`);
   }
 
+  // Lob devuelve el precio de la carta en la respuesta; lo dejamos en el registro
+  // (Logs de Render) para poder revisar el costo real de impresión + envío por carta.
+  console.log(`💲 Lob letter ${data.id}: precio ${data.price ?? 'n/d'} (páginas: ${data.pages ?? data.page_count ?? 'n/d'})`);
+
   return data.id; // id de la carta en Lob, útil para rastrear el envío
 }
 
