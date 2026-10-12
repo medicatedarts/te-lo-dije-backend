@@ -265,7 +265,8 @@ async function sendLetterViaLob(order) {
     // ventana del sobre). Así NO se agrega una hoja extra. letterTemplate.js deja
     // libre esa zona.
     address_placement: 'top_first_page',
-    size: 'us_letter',
+    // Nota: las cartas de Lob siempre son tamaño carta (US Letter); el parámetro "size"
+    // no existe para cartas (solo para postales) y Lob lo rechaza.
   };
 
   const response = await fetch('https://api.lob.com/v1/letters', {
