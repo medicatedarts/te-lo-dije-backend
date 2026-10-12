@@ -73,20 +73,25 @@ function buildLetterHtml(order, stampImageUrl) {
 <head>
 <meta charset="UTF-8">
 <style>
-  @page { size: letter; margin: 0.85in; }
+  /* Lob ignora los márgenes de @page, así que el margen va como padding del body.
+     Los lados dejan >= 0.75in libres: Lob imprime marcas de seguimiento (QR, líneas)
+     en el borde izquierdo y la parte baja de cada hoja. */
+  @page { size: letter; margin: 0; }
+  html, body { margin: 0; padding: 0; }
   body {
     font-family: Georgia, 'Times New Roman', serif;
     color: #2A1830;
-    font-size: 12.5pt;
-    line-height: 1.5;
+    font-size: 11.5pt;
+    line-height: 1.4;
+    padding: 0 0.8in;
   }
-  .address-space { height: 2.75in; }
+  .address-space { height: 2.95in; }
   .meta {
     display: flex;
     justify-content: space-between;
     font-size: 9.5pt;
     color: #5A4A5F;
-    margin-bottom: 26px;
+    margin-bottom: 16px;
   }
   h1 {
     text-align: center;
@@ -105,15 +110,18 @@ function buildLetterHtml(order, stampImageUrl) {
   }
   .divider {
     width: 60px; height: 2px; background: #C99A2E;
-    margin: 20px auto 26px;
+    margin: 14px auto 16px;
   }
   ol { padding-left: 20px; }
-  ol li { margin-bottom: 6px; }
+  ol li { margin-bottom: 4px; }
+  p { margin: 0 0 10px; }
   .sign-off {
     font-size: 10.5pt;
     color: #5A4A5F;
-    margin: 46px 0 4px;
+    margin: 18px 0 2px;
   }
+  .closing { display: flex; justify-content: space-between; align-items: flex-end; }
+  .closing .sig { flex: 1; min-width: 0; padding-right: 12px; }
   .signature-name {
     font-family: Georgia, serif;
     font-style: italic;
@@ -124,9 +132,8 @@ function buildLetterHtml(order, stampImageUrl) {
     overflow-wrap: break-word;
   }
   .stamp {
-    width: 130px;
-    margin-top: 18px;
-    margin-left: auto;
+    width: 105px;
+    flex: none;
     transform: rotate(-10deg);
   }
 </style>
@@ -153,10 +160,13 @@ function buildLetterHtml(order, stampImageUrl) {
 
   <p>${copy.closing2}</p>
 
-  <p class="sign-off">Atentamente,</p>
-  <p class="signature-name">${remitenteEsc}</p>
-
-  ${stampImageUrl ? `<img class="stamp" src="${escapeHtml(stampImageUrl)}" alt="Sello Te Lo Dije" />` : ''}
+  <div class="closing">
+    <div class="sig">
+      <p class="sign-off">Atentamente,</p>
+      <p class="signature-name">${remitenteEsc}</p>
+    </div>
+    ${stampImageUrl ? `<img class="stamp" src="${escapeHtml(stampImageUrl)}" alt="Sello Te Lo Dije" />` : ''}
+  </div>
 </body>
 </html>`;
 }
