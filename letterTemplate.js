@@ -86,9 +86,10 @@ function buildLetterHtml(order, stampImageUrl) {
     padding: 0 0.8in;
   }
   .address-space { height: 2.95in; }
+  /* OJO: el motor de Lob no soporta flexbox ni transform (se vio en la vista previa),
+     así que el layout usa floats. */
   .meta {
-    display: flex;
-    justify-content: space-between;
+    overflow: hidden;
     font-size: 9.5pt;
     color: #5A4A5F;
     margin-bottom: 16px;
@@ -120,8 +121,8 @@ function buildLetterHtml(order, stampImageUrl) {
     color: #5A4A5F;
     margin: 18px 0 2px;
   }
-  .closing { display: flex; justify-content: space-between; align-items: flex-end; }
-  .closing .sig { flex: 1; min-width: 0; padding-right: 12px; }
+  .closing { overflow: hidden; }
+  .closing .sig { float: left; width: 70%; }
   .signature-name {
     font-family: Georgia, serif;
     font-style: italic;
@@ -133,8 +134,8 @@ function buildLetterHtml(order, stampImageUrl) {
   }
   .stamp {
     width: 105px;
-    flex: none;
-    transform: rotate(-10deg);
+    float: right;
+    margin-top: 6px;
   }
 </style>
 </head>
@@ -142,8 +143,8 @@ function buildLetterHtml(order, stampImageUrl) {
   <!-- Zona reservada para el bloque de dirección que Lob imprime arriba de la primera página -->
   <div class="address-space"></div>
   <div class="meta">
-    <span>Exp. Núm. ${escapeHtml(expNumber)}</span>
-    <span>${formatDateEs(new Date(createdAt))}</span>
+    <span style="float:left">Exp. Núm. ${escapeHtml(expNumber)}</span>
+    <span style="float:right">${formatDateEs(new Date(createdAt))}</span>
   </div>
 
   <h1>Notificación de Advertencia Cumplida</h1>
